@@ -26,7 +26,13 @@ jobs:
 
       - name: Set version from release tag
         run: |
+          echo "GITHUB_REF=$GITHUB_REF"
+          echo "GITHUB_REF_NAME=$GITHUB_REF_NAME"
           VERSION="${GITHUB_REF_NAME#v}"
+          if [ -z "$VERSION" ]; then
+            echo "::error::GITHUB_REF_NAME ('$GITHUB_REF_NAME') did not yield a valid version. Create a release from a v-prefixed semver tag (e.g. v1.0.0)."
+            exit 1
+          fi
           echo "Publishing version $VERSION"
           npm version "$VERSION" --no-git-tag-version --allow-same-version
 

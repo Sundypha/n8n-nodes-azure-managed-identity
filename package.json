@@ -1,0 +1,48 @@
+{
+  "name": "n8n-nodes-azure-managed-identity",
+  "version": "0.1.0",
+  "description": "n8n credential type for Azure Managed Identity token acquisition",
+  "license": "MIT",
+  "keywords": [
+    "n8n-community-node-package"
+  ],
+  "author": {
+    "name": "Simon Balkau"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Sundypha/n8n-nodes-azure-managed-identity.git"
+  },
+  "homepage": "https://github.com/Sundypha/n8n-nodes-azure-managed-identity#readme",
+  "bugs": {
+    "url": "https://github.com/Sundypha/n8n-nodes-azure-managed-identity/issues"
+  },
+  "scripts": {
+    "build": "n8n-node build",
+    "build:watch": "n8n-node build --watch",
+    "dev": "n8n-node dev",
+    "lint": "n8n-node lint",
+    "lint:fix": "n8n-node lint --fix",
+    "release": "n8n-node release",
+    "test": "vitest run --exclude dist"
+  },
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/AzureManagedIdentityApi.credentials.js"
+    ],
+    "nodes": []
+  },
+  "devDependencies": {
+    "@n8n/node-cli": "^0.20.0",
+    "@types/node": "^25.3.0",
+    "typescript": "~5.9.0",
+    "vitest": "^4.0.18"
+  },
+  "peerDependencies": {
+    "n8n-workflow": ">=2.0.0"
+  }
+}

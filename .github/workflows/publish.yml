@@ -21,6 +21,12 @@ jobs:
           cache: npm
           registry-url: https://registry.npmjs.org
 
+      - name: Set version from release tag
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          echo "Publishing version $VERSION"
+          npm version "$VERSION" --no-git-tag-version
+
       - run: npm ci --ignore-scripts
       - run: npm test
       - run: npm run build

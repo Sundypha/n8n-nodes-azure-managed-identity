@@ -15,10 +15,10 @@ Works on any Azure compute with a managed identity assigned:
 
 ## Credential Fields
 
-| Field | Description | Required |
-|-------|-------------|----------|
-| Resource / Audience | The `api://` URI or resource URL to request a token for | Yes |
-| Client ID | Managed Identity client ID (for user-assigned identities) | No |
+| Field               | Description                                               | Required |
+| ------------------- | --------------------------------------------------------- | -------- |
+| Resource / Audience | The `api://` URI or resource URL to request a token for   | Yes      |
+| Client ID           | Managed Identity client ID (for user-assigned identities) | No       |
 
 ## Usage
 
@@ -40,12 +40,14 @@ When an HTTP Request node fires, the credential's `authenticate` method runs bef
 3. **Fetch a new token** — if the cache misses or the token is near expiry, a `GET` request is made to the detected endpoint:
 
    **App Service / Container Apps / AKS:**
+
    ```
    GET {IDENTITY_ENDPOINT}?api-version=2019-08-01&resource={resource}[&client_id={clientId}]
    X-IDENTITY-HEADER: {IDENTITY_HEADER}
    ```
 
    **VMs / VMSS:**
+
    ```
    GET http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource={resource}[&client_id={clientId}]
    Metadata: true

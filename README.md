@@ -1,8 +1,39 @@
 # n8n-nodes-azure-managed-identity
 
-n8n community node that provides an **Azure Managed Identity** credential type.
+n8n community node that provides an **Azure Managed Identity** credential type and a validation node.
 
 Enables any HTTP Request node to authenticate using Azure Managed Identity tokens — no secrets, no client certificates, no env var access needed from within n8n.
+
+## Included Node
+
+### Azure Managed Identity Validate
+
+A utility node that acquires a managed identity token and returns the decoded JWT claims **without exposing the token itself**. Use it to verify that your managed identity is configured correctly.
+
+Output fields:
+
+| Field                     | Description                                                            |
+| ------------------------- | ---------------------------------------------------------------------- |
+| success                   | `true` if a token was acquired and decoded                             |
+| audience                  | The `aud` claim — resource the token is for                            |
+| issuer                    | The `iss` claim — token issuer URL                                     |
+| tenantId                  | The `tid` claim — Azure AD tenant ID                                   |
+| objectId                  | The `oid` claim — identity object ID                                   |
+| appId                     | The `appid` claim — application / client ID                            |
+| subject                   | The `sub` claim                                                        |
+| identityType              | The `idtyp` claim (e.g. `app`)                                         |
+| tokenVersion              | The `ver` claim                                                        |
+| issuedAt                  | Token issue time (ISO 8601)                                            |
+| notBefore                 | Token validity start (ISO 8601)                                        |
+| expiresAt                 | Token expiry time (ISO 8601)                                           |
+| managedIdentityResourceId | The `xms_mirid` claim (user-assigned MI resource ID)                   |
+| accessToken               | The raw Bearer token (**only when "Include Access Token" is enabled**) |
+
+### Include Access Token option
+
+The node has an **Include Access Token** toggle (off by default). When enabled, the raw Bearer token is added to the output as `accessToken`. This is useful when you need to pass the token to other nodes as a custom header.
+
+> **Caution**: Enabling this option will expose the access token in the node output, execution logs, and the n8n database. Treat it as a secret — do not log, share, or expose it outside trusted workflows.
 
 ## Supported Environments
 

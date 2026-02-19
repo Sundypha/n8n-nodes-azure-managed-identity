@@ -62,7 +62,7 @@ async function fetchTokenFromImds(resource: string, clientId: string): Promise<R
 	});
 }
 
-async function fetchToken(resource: string, clientId: string): Promise<string> {
+export async function fetchToken(resource: string, clientId: string): Promise<string> {
 	const identityEndpoint = process.env.IDENTITY_ENDPOINT;
 	const identityHeader = process.env.IDENTITY_HEADER;
 
@@ -96,7 +96,7 @@ export class AzureManagedIdentityApi implements ICredentialType {
 
 	displayName = 'Azure Managed Identity API';
 
-	icon = 'file:icons/azure-managed-identity.svg' as const;
+	icon = 'file:../assets/icons/azure-managed-identity.svg' as const;
 
 	documentationUrl =
 		'https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview';

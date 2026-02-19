@@ -49,10 +49,7 @@ async function fetchTokenFromAppService(
 	});
 }
 
-async function fetchTokenFromImds(
-	resource: string,
-	clientId: string,
-): Promise<Response> {
+async function fetchTokenFromImds(resource: string, clientId: string): Promise<Response> {
 	const params = new URLSearchParams({
 		'api-version': '2018-02-01',
 		resource,
@@ -101,11 +98,13 @@ export class AzureManagedIdentityApi implements ICredentialType {
 
 	icon = 'file:icons/azure-managed-identity.svg' as const;
 
-	documentationUrl = 'https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview';
+	documentationUrl =
+		'https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview';
 
 	httpRequestNode = {
 		name: 'Azure Managed Identity',
-		docsUrl: 'https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview',
+		docsUrl:
+			'https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview',
 		apiBaseUrlPlaceholder: 'https://your-api.example.com/',
 	};
 
@@ -124,7 +123,8 @@ export class AzureManagedIdentityApi implements ICredentialType {
 			name: 'clientId',
 			type: 'string',
 			default: '',
-			description: 'Client ID of the user-assigned managed identity. Leave empty for system-assigned.',
+			description:
+				'Client ID of the user-assigned managed identity. Leave empty for system-assigned.',
 		},
 	];
 
@@ -139,7 +139,7 @@ export class AzureManagedIdentityApi implements ICredentialType {
 			throw new Error('Azure Managed Identity credential: "Resource / Audience" is required.');
 		}
 
-		const token = getCachedToken(resource, clientId) ?? await fetchToken(resource, clientId);
+		const token = getCachedToken(resource, clientId) ?? (await fetchToken(resource, clientId));
 
 		requestOptions.headers = {
 			...requestOptions.headers,

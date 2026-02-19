@@ -33,10 +33,7 @@ describe('AzureManagedIdentityApi', () => {
 		process.env.IDENTITY_HEADER = 'test-header';
 
 		await expect(
-			credential.authenticate(
-				{ resource: '', clientId: '' },
-				makeRequestOptions(),
-			),
+			credential.authenticate({ resource: '', clientId: '' }, makeRequestOptions()),
 		).rejects.toThrow('"Resource / Audience" is required');
 	});
 
@@ -48,9 +45,9 @@ describe('AzureManagedIdentityApi', () => {
 
 		it('fetches a token using X-IDENTITY-HEADER and sets Authorization', async () => {
 			const expiresOn = Math.floor(Date.now() / 1000) + 3600;
-			const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue(
-				mockTokenResponse('appservice-token', expiresOn),
-			);
+			const fetchSpy = vi
+				.spyOn(global, 'fetch')
+				.mockResolvedValue(mockTokenResponse('appservice-token', expiresOn));
 
 			const result = await credential.authenticate(
 				{ resource: 'api://test-appservice', clientId: '' },
@@ -72,9 +69,9 @@ describe('AzureManagedIdentityApi', () => {
 
 		it('caches tokens and reuses them on subsequent calls', async () => {
 			const expiresOn = Math.floor(Date.now() / 1000) + 3600;
-			const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue(
-				mockTokenResponse('cached-token', expiresOn),
-			);
+			const fetchSpy = vi
+				.spyOn(global, 'fetch')
+				.mockResolvedValue(mockTokenResponse('cached-token', expiresOn));
 
 			const creds = { resource: 'api://test-cache-as', clientId: '' };
 
@@ -91,7 +88,8 @@ describe('AzureManagedIdentityApi', () => {
 			const nearExpiry = Math.floor(Date.now() / 1000) + 100;
 			const freshExpiry = Math.floor(Date.now() / 1000) + 3600;
 
-			const fetchSpy = vi.spyOn(global, 'fetch')
+			const fetchSpy = vi
+				.spyOn(global, 'fetch')
 				.mockResolvedValueOnce(mockTokenResponse('old-token', nearExpiry))
 				.mockResolvedValueOnce(mockTokenResponse('new-token', freshExpiry));
 
@@ -131,9 +129,9 @@ describe('AzureManagedIdentityApi', () => {
 
 		it('falls back to IMDS endpoint with Metadata header', async () => {
 			const expiresOn = Math.floor(Date.now() / 1000) + 3600;
-			const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue(
-				mockTokenResponse('vm-token', expiresOn),
-			);
+			const fetchSpy = vi
+				.spyOn(global, 'fetch')
+				.mockResolvedValue(mockTokenResponse('vm-token', expiresOn));
 
 			const result = await credential.authenticate(
 				{ resource: 'api://test-vm', clientId: '' },
@@ -149,16 +147,14 @@ describe('AzureManagedIdentityApi', () => {
 			expect(calledHeaders['Metadata']).toBe('true');
 			expect(calledHeaders['X-IDENTITY-HEADER']).toBeUndefined();
 
-			expect(result.headers).toEqual(
-				expect.objectContaining({ Authorization: 'Bearer vm-token' }),
-			);
+			expect(result.headers).toEqual(expect.objectContaining({ Authorization: 'Bearer vm-token' }));
 		});
 
 		it('passes client_id for user-assigned identity on VM', async () => {
 			const expiresOn = Math.floor(Date.now() / 1000) + 3600;
-			const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue(
-				mockTokenResponse('vm-ua-token', expiresOn),
-			);
+			const fetchSpy = vi
+				.spyOn(global, 'fetch')
+				.mockResolvedValue(mockTokenResponse('vm-ua-token', expiresOn));
 
 			await credential.authenticate(
 				{ resource: 'api://test-vm-ua', clientId: 'my-client-id' },
